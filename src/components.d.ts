@@ -17,9 +17,11 @@ declare module 'vue' {
     LayoutFilter: typeof import('./components/layout/LayoutFilter.vue')['default']
     LayoutFooter: typeof import('./components/layout/LayoutFooter.vue')['default']
     LayoutNavbar: typeof import('./components/layout/LayoutNavbar.vue')['default']
-    MovieCard: typeof import('./components/ui/UiCard.vue')['default']
+    MovieCard: typeof import('./components/ui/UiCardGrid.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    UiCard: typeof import('./components/ui/UiCard.vue')['default']
+    UiCard: typeof import('./components/ui/UiCardGrid.vue')['default']
+    UiCardGrid: typeof import('./components/ui/UiCardGrid.vue')['default']
+    UiCardList: typeof import('./components/ui/UiCardList.vue')['default']
   }
 }

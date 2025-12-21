@@ -5,10 +5,11 @@
         v-for="i in 4"
         :key="i"
         cols="12"
-        lg="4"
-        md="6"
+        :lg="viewMode === 'grid' ? 4 : 12"
+        :md="viewMode === 'grid' ? 6 : 12"
       >
-        <ui-card />
+        <ui-card-grid v-if="viewMode === 'grid'" />
+        <ui-card-list v-else />
       </v-col>
     </v-row>
 
@@ -17,5 +18,8 @@
 </template>
 
 <script lang="ts" setup>
-//
+  import { useMovieStore } from '@/stores/movie'
+
+  const movieStore = useMovieStore()
+  const viewMode = computed(() => movieStore.viewMode)
 </script>

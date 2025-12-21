@@ -47,7 +47,7 @@
         </div>
 
         <v-btn-toggle
-          v-model="viewMode"
+          v-model="movieStore.viewMode"
           :bg-color="toggleBgColor"
           class="rounded-lg view-toggle"
           density="compact"
@@ -57,21 +57,21 @@
         >
           <v-btn
             class="view-toggle-btn"
-            :color="viewMode === 'grid' ? 'primary' : 'transparent'"
+            :color="isGridView ? 'primary' : 'transparent'"
             size="small"
             :value="'grid'"
-            :variant="viewMode === 'grid' ? 'flat' : 'text'"
+            :variant="isGridView ? 'flat' : 'text'"
           >
-            <v-icon :color="viewMode === 'grid' ? 'white' : iconColor">mdi-view-grid</v-icon>
+            <v-icon :color="isGridView ? 'white' : iconColor">mdi-view-grid</v-icon>
           </v-btn>
           <v-btn
             class="view-toggle-btn"
-            :color="viewMode === 'list' ? 'primary' : 'transparent'"
+            :color="isListView ? 'primary' : 'transparent'"
             size="small"
             :value="'list'"
-            :variant="viewMode === 'list' ? 'flat' : 'text'"
+            :variant="isListView ? 'flat' : 'text'"
           >
-            <v-icon :color="viewMode === 'list' ? 'white' : iconColor">mdi-view-list</v-icon>
+            <v-icon :color="isListView ? 'white' : iconColor">mdi-view-list</v-icon>
           </v-btn>
         </v-btn-toggle>
       </v-card-text>
@@ -82,11 +82,13 @@
 <script lang="ts" setup>
   import { computed, ref } from 'vue'
   import { useTheme } from 'vuetify'
+  import { useMovieStore } from '@/stores/movie'
 
   const theme = useTheme()
-  const selectedYear = ref('all')
-  const selectedSort = ref('latest')
-  const viewMode = ref('grid')
+  const movieStore = useMovieStore()
+
+  const selectedYear = ref<string>('all')
+  const selectedSort = ref<string>('latest')
 
   const isDark = computed(() => theme.current.value.dark)
   const cardColor = computed(() => (isDark.value ? 'surface' : 'white'))
@@ -95,6 +97,9 @@
   const toggleBgColor = computed(() => (isDark.value ? 'grey-darken-2' : 'grey-lighten-3'))
   const textColor = computed(() => (isDark.value ? 'text-grey-lighten-1' : 'text-grey-darken-1'))
   const iconColor = computed(() => (isDark.value ? 'grey-lighten-1' : 'grey-darken-1'))
+  const viewMode = computed(() => movieStore.viewMode)
+  const isGridView = computed(() => viewMode.value === 'grid')
+  const isListView = computed(() => viewMode.value === 'list')
 
   const yearItems = [
     { title: 'All', value: 'all' },
