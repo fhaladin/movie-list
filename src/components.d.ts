@@ -11,9 +11,15 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AppFooter: typeof import('./components/AppFooter.vue')['default']
+    AppFooter: typeof import('./components/layout/LayoutFooter.vue')['default']
+    copy: typeof import('./components/layout/LayoutFooter copy.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    LayoutFilter: typeof import('./components/layout/LayoutFilter.vue')['default']
+    LayoutFooter: typeof import('./components/layout/LayoutFooter.vue')['default']
+    LayoutNavbar: typeof import('./components/layout/LayoutNavbar.vue')['default']
+    MovieCard: typeof import('./components/ui/UiCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    UiCard: typeof import('./components/ui/UiCard.vue')['default']
   }
 }
