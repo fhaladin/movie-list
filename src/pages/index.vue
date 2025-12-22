@@ -1,4 +1,6 @@
 <template>
+  <ui-filter-movie />
+
   <v-container class="py-0">
     <ui-skeleton-grid v-if="movieStore.loading" />
 

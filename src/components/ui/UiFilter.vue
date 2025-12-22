@@ -3,14 +3,15 @@
     <v-card class="rounded-lg my-4" :color="cardColor" elevation="1">
       <v-card-text class="d-flex align-center ga-3 pa-4">
         <v-select
-          v-model="movieStore.selectedSort"
           :bg-color="selectBgColor"
           class="filter-select"
           density="compact"
           hide-details
           :items="sortItems"
+          :model-value="selectedSort"
           style="max-width: 150px;"
           variant="solo-filled"
+          @update:model-value="handleSortChange"
         >
           <template #selection="{ item }">
             <span class="text-body-2" :class="textColor">{{ item.title }}</span>
@@ -18,14 +19,15 @@
         </v-select>
 
         <v-text-field
-          v-model="movieStore.searchQuery"
           :bg-color="selectBgColor"
           class="filter-search"
           density="compact"
           hide-details
+          :model-value="searchQuery"
           placeholder="Search..."
           style="max-width: 250px;"
           variant="solo-filled"
+          @update:model-value="handleSearchChange"
         >
           <template #prepend-inner>
             <v-icon :color="iconColor">mdi-magnify</v-icon>
@@ -35,13 +37,14 @@
         <v-spacer />
 
         <v-btn-toggle
-          v-model="movieStore.viewMode"
           :bg-color="toggleBgColor"
           class="rounded-lg view-toggle"
           density="compact"
           divided
           mandatory
+          :model-value="viewMode"
           variant="flat"
+          @update:model-value="handleViewModeChange"
         >
           <v-btn
             class="view-toggle-btn"
@@ -68,18 +71,29 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref } from 'vue'
+  import { computed } from 'vue'
   import { useTheme } from 'vuetify'
-  import { useMovieStore } from '@/stores/movie'
 
   interface SortItem {
     title: string
     value: string
   }
 
+  interface Props {
+    searchQuery: string
+    selectedSort: string
+    viewMode: 'grid' | 'list'
+  }
+
+  const props = defineProps<Props>()
+
+  const emit = defineEmits<{
+    'update:searchQuery': [value: string]
+    'update:selectedSort': [value: string]
+    'update:viewMode': [value: 'grid' | 'list']
+  }>()
+
   const theme = useTheme()
-  const movieStore = useMovieStore()
-  const searchDebounced = ref<number | null>(null)
 
   const isDark = computed((): boolean => theme.current.value.dark)
   const cardColor = computed((): string => (isDark.value ? 'surface' : 'white'))
@@ -87,21 +101,20 @@
   const toggleBgColor = computed((): string => (isDark.value ? 'grey-darken-2' : 'grey-lighten-3'))
   const textColor = computed((): string => (isDark.value ? 'text-grey-lighten-1' : 'text-grey-darken-1'))
   const iconColor = computed((): string => (isDark.value ? 'grey-lighten-1' : 'grey-darken-1'))
-  const viewMode = computed((): 'grid' | 'list' => movieStore.viewMode)
-  const isGridView = computed((): boolean => viewMode.value === 'grid')
-  const isListView = computed((): boolean => viewMode.value === 'list')
+  const isGridView = computed((): boolean => props.viewMode === 'grid')
+  const isListView = computed((): boolean => props.viewMode === 'list')
 
-  watch(() => movieStore.searchQuery, async () => {
-    clearTimeout(searchDebounced.value as number)
+  function handleSearchChange (value: string): void {
+    emit('update:searchQuery', value)
+  }
 
-    searchDebounced.value = setTimeout(async () => {
-      if (movieStore.page === 1) {
-        await movieStore.fetch()
-      } else {
-        movieStore.page = 1
-      }
-    }, 400)
-  })
+  function handleSortChange (value: string): void {
+    emit('update:selectedSort', value)
+  }
+
+  function handleViewModeChange (value: 'grid' | 'list'): void {
+    emit('update:viewMode', value)
+  }
 
   const sortItems: SortItem[] = [
     { title: 'Latest', value: 'latest' },
@@ -109,4 +122,4 @@
     { title: 'A-Z', value: 'az' },
     { title: 'Z-A', value: 'za' },
   ]
-  </script>
+</script>

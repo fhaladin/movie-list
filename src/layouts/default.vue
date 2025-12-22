@@ -1,6 +1,5 @@
 <template>
   <layout-navbar />
-  <layout-filter />
 
   <v-main>
     <router-view />

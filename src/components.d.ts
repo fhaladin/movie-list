@@ -12,7 +12,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/layout/LayoutFooter.vue')['default']
-    copy: typeof import('./components/layout/LayoutFooter copy.vue')['default']
+    copy: typeof import('./components/ui/UiFilterMovie copy.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     LayoutFilter: typeof import('./components/layout/LayoutFilter.vue')['default']
     LayoutFooter: typeof import('./components/layout/LayoutFooter.vue')['default']
@@ -23,6 +23,10 @@ declare module 'vue' {
     UiCard: typeof import('./components/ui/UiCardGrid.vue')['default']
     UiCardGrid: typeof import('./components/ui/UiCardGrid.vue')['default']
     UiCardList: typeof import('./components/ui/UiCardList.vue')['default']
+    UiFilter: typeof import('./components/ui/UiFilter.vue')['default']
+    UiFilterFavorite: typeof import('./components/ui/UiFilterFavorite.vue')['default']
+    UiFilterFavoriteMovie: typeof import('./components/ui/UiFilterFavoriteMovie.vue')['default']
+    UiFilterMovie: typeof import('./components/ui/UiFilterMovie.vue')['default']
     UiNotFound: typeof import('./components/ui/UiNotFound.vue')['default']
     UiSkeletonGrid: typeof import('./components/ui/UiSkeletonGrid.vue')['default']
   }

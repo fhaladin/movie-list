@@ -8,7 +8,13 @@
         <p class="text-caption text-white">Editor's Choice</p>
       </v-chip>
     </div>
-    <v-btn class="fav-button" icon="mdi-heart-outline" size="small" />
+    <v-btn
+      class="fav-button"
+      :color="isFavorited ? 'pink' : undefined"
+      :icon="isFavorited ? 'mdi-heart' : 'mdi-heart-outline'"
+      size="small"
+      @click="toggleFavorite"
+    />
 
     <v-img
       cover
@@ -37,18 +43,26 @@
 
 <script lang="ts" setup>
   import type { Movie } from '@/stores/movie'
-  import { ref } from 'vue'
+  import { computed, ref } from 'vue'
+  import { useFavoriteStore } from '@/stores/favorite'
   import { randomBoolean, randomCategory, randomNumber } from '@/utils/randomizer'
 
-  defineProps<{
+  const props = defineProps<{
     movie: Movie
   }>()
 
+  const favoriteStore = useFavoriteStore()
   const elevation = ref<number>(1)
   const isTrending = ref<boolean>(randomBoolean())
   const isEditorChoice = ref<boolean>(randomBoolean())
   const rating = ref<number>(randomNumber(4, 10))
   const category = ref<string>(randomCategory())
+
+  const isFavorited = computed(() => favoriteStore.isFavorite(props.movie))
+
+  function toggleFavorite () {
+    favoriteStore.toggleFavorite(props.movie)
+  }
 </script>
 
 <style lang="scss" scoped>
