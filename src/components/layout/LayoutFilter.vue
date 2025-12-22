@@ -3,7 +3,7 @@
     <v-card class="rounded-lg my-4" :color="cardColor" elevation="1">
       <v-card-text class="d-flex align-center ga-3 pa-4">
         <v-select
-          v-model="selectedSort"
+          v-model="movieStore.selectedSort"
           :bg-color="selectBgColor"
           class="filter-select"
           density="compact"
@@ -18,7 +18,7 @@
         </v-select>
 
         <v-text-field
-          v-model="searchQuery"
+          v-model="movieStore.searchQuery"
           :bg-color="selectBgColor"
           class="filter-search"
           density="compact"
@@ -79,9 +79,7 @@
 
   const theme = useTheme()
   const movieStore = useMovieStore()
-
-  const searchQuery = ref<string>('')
-  const selectedSort = ref<string>('latest')
+  const searchDebounced = ref<number | null>(null)
 
   const isDark = computed((): boolean => theme.current.value.dark)
   const cardColor = computed((): string => (isDark.value ? 'surface' : 'white'))
@@ -92,6 +90,18 @@
   const viewMode = computed((): 'grid' | 'list' => movieStore.viewMode)
   const isGridView = computed((): boolean => viewMode.value === 'grid')
   const isListView = computed((): boolean => viewMode.value === 'list')
+
+  watch(() => movieStore.searchQuery, async () => {
+    clearTimeout(searchDebounced.value as number)
+
+    searchDebounced.value = setTimeout(async () => {
+      if (movieStore.page === 1) {
+        await movieStore.fetch()
+      } else {
+        movieStore.page = 1
+      }
+    }, 400)
+  })
 
   const sortItems: SortItem[] = [
     { title: 'Latest', value: 'latest' },

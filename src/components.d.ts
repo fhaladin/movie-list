@@ -23,5 +23,7 @@ declare module 'vue' {
     UiCard: typeof import('./components/ui/UiCardGrid.vue')['default']
     UiCardGrid: typeof import('./components/ui/UiCardGrid.vue')['default']
     UiCardList: typeof import('./components/ui/UiCardList.vue')['default']
+    UiNotFound: typeof import('./components/ui/UiNotFound.vue')['default']
+    UiSkeletonGrid: typeof import('./components/ui/UiSkeletonGrid.vue')['default']
   }
 }

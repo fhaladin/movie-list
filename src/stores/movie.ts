@@ -9,6 +9,7 @@ interface State {
   total: number
   totalPages: number
   loading: boolean
+  pending: boolean
   error: string | null
   searchQuery: string
   selectedSort: string
@@ -30,27 +31,62 @@ export const useMovieStore = defineStore('movie', {
     total: 0,
     totalPages: 1,
     loading: false,
+    pending: true,
     error: null,
     searchQuery: '',
     selectedSort: 'latest',
     fetchDebounced: null,
   }),
+  getters: {
+    sortedData: (state: State): Movie[] => {
+      return state.data.toSorted((a: Movie, b: Movie) => {
+        switch (state.selectedSort) {
+          case 'az': {
+            return a.Title.localeCompare(b.Title)
+          }
+          case 'za': {
+            return b.Title.localeCompare(a.Title)
+          }
+          case 'latest': {
+            return a.Year - b.Year
+          }
+          case 'oldest': {
+            return b.Year - a.Year
+          }
+        }
+
+        return a.Year - b.Year
+      })
+    },
+  },
   actions: {
     async fetch () {
       this.loading = true
+
+      const query = new URLSearchParams()
+      if (this.searchQuery) {
+        query.append('Title', this.searchQuery)
+      }
+      if (this.page) {
+        query.append('page', this.page.toString())
+      }
+
       clearTimeout(this.fetchDebounced as number)
 
       this.fetchDebounced = setTimeout(async () => {
         try {
-          const { data } = await api.get(`/movies?title=${this.searchQuery}&page=${this.page}`)
+          const { data } = await api.get(`/movies?${query.toString()}`)
 
           this.data = data.data
           this.page = data.page
           this.perPage = data.per_page
           this.total = data.total
-          this.totalPages = data.total_pages
+          this.totalPages = data.total_pages || 1
         } catch (error) {
           this.error = error as string
+        } finally {
+          this.pending = false
+          this.loading = false
         }
       }, 400)
     },

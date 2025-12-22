@@ -1,8 +1,10 @@
 <template>
   <v-container class="py-0">
-    <v-row>
+    <ui-skeleton-grid v-if="movieStore.loading" />
+
+    <v-row v-else>
       <v-col
-        v-for="movie in movieStore.data"
+        v-for="movie in movieStore.sortedData"
         :key="movie.imdbID"
         cols="12"
         :lg="viewMode === 'grid' ? 4 : 12"
@@ -11,9 +13,19 @@
         <ui-card-grid v-if="viewMode === 'grid'" :movie="movie" />
         <ui-card-list v-else :movie="movie" />
       </v-col>
+
+      <v-col v-if="!movieStore.pending" cols="12">
+        <ui-not-found v-if="movieStore.data.length === 0" />
+      </v-col>
     </v-row>
 
-    <v-pagination v-model="movieStore.page" class="my-6" :length="movieStore.totalPages" total-visible="10" />
+    <v-pagination
+      v-if="!movieStore.pending"
+      v-model="movieStore.page"
+      class="my-6"
+      :length="movieStore.totalPages"
+      total-visible="10"
+    />
   </v-container>
 </template>
 
