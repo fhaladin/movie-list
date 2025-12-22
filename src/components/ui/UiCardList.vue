@@ -14,7 +14,7 @@
 
       <div class="content">
         <v-card-title class="content-title pl-4 pb-2">
-          Oppenheimer
+          {{ movie.Title }}
           <div class="tag">
             <v-chip v-if="isTrending" color="orange" size="x-small" variant="flat">
               <p class="text-caption text-white">Trending</p>
@@ -27,7 +27,7 @@
 
         <div>
           <v-card-subtitle class="pl-4 pb-2">
-            2003 - History - Rating: {{ rating }}
+            {{ movie.Year }} - {{ category }} - Rating: {{ rating }}
           </v-card-subtitle>
           <v-card-subtitle class="pl-4 pb-0">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum magnam, unde quos distinctio sequi aut.
@@ -39,13 +39,19 @@
 </template>
 
 <script lang="ts" setup>
+  import type { Movie } from '@/stores/movie'
   import { ref } from 'vue'
-  import { randomBoolean, randomNumber } from '@/utils/randomizer'
+  import { randomBoolean, randomCategory, randomNumber } from '@/utils/randomizer'
+
+  defineProps<{
+    movie: Movie
+  }>()
 
   const elevation = ref<number>(1)
   const isTrending = ref<boolean>(randomBoolean())
   const isEditorChoice = ref<boolean>(randomBoolean())
   const rating = ref<number>(randomNumber(4, 10))
+  const category = ref<string>(randomCategory())
 </script>
 
 <style lang="scss" scoped>

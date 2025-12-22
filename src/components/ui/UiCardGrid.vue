@@ -17,12 +17,12 @@
     />
 
     <v-card-title>
-      Oppenheimer
+      {{ movie.Title }}
     </v-card-title>
 
     <div class="d-flex align-center justify-space-between mb-4">
       <v-card-subtitle>
-        2003 - History
+        {{ movie.Year }} - {{ category }}
       </v-card-subtitle>
 
       <v-spacer />
@@ -36,13 +36,19 @@
 </template>
 
 <script lang="ts" setup>
+  import type { Movie } from '@/stores/movie'
   import { ref } from 'vue'
-  import { randomBoolean, randomNumber } from '@/utils/randomizer'
+  import { randomBoolean, randomCategory, randomNumber } from '@/utils/randomizer'
+
+  defineProps<{
+    movie: Movie
+  }>()
 
   const elevation = ref<number>(1)
   const isTrending = ref<boolean>(randomBoolean())
   const isEditorChoice = ref<boolean>(randomBoolean())
   const rating = ref<number>(randomNumber(4, 10))
+  const category = ref<string>(randomCategory())
 </script>
 
 <style lang="scss" scoped>
