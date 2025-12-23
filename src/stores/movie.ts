@@ -48,10 +48,10 @@ export const useMovieStore = defineStore('movie', {
             return b.Title.localeCompare(a.Title)
           }
           case 'latest': {
-            return a.Year - b.Year
+            return b.Year - a.Year
           }
           case 'oldest': {
-            return b.Year - a.Year
+            return a.Year - b.Year
           }
         }
 
