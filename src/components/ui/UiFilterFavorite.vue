@@ -21,10 +21,10 @@
   }
 
   function handleSearchChange (value: string): void {
-    favoriteStore.setSearchQuery(value)
+    favoriteStore.searchQuery = value
   }
 
   function handleSortChange (value: string): void {
-    favoriteStore.setSelectedSort(value)
+    favoriteStore.selectedSort = value
   }
 </script>
