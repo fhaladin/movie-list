@@ -3,10 +3,10 @@
     <v-col
       v-for="i in 4"
       :key="i"
-      cols="12"
+      :cols="viewMode === 'grid' ? 6 : 12"
       height="200px"
-      :lg="viewMode === 'grid' ? 4 : 12"
-      :md="viewMode === 'grid' ? 6 : 12"
+      :lg="viewMode === 'grid' ? 3 : 12"
+      :md="viewMode === 'grid' ? 4 : 12"
     >
       <v-skeleton-loader
         class="mx-auto border"
