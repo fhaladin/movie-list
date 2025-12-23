@@ -103,11 +103,5 @@ export const useFavoriteStore = defineStore('favorite', {
       this.favorites = []
       saveFavorites(this.favorites)
     },
-    setSearchQuery (query: string): void {
-      this.searchQuery = query
-    },
-    setSelectedSort (sort: string): void {
-      this.selectedSort = sort
-    },
   },
 })

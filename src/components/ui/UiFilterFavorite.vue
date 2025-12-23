@@ -3,8 +3,8 @@
     :search-query="favoriteStore.searchQuery"
     :selected-sort="favoriteStore.selectedSort"
     :view-mode="movieStore.viewMode"
-    @update:search-query="favoriteStore.setSearchQuery"
-    @update:selected-sort="favoriteStore.setSelectedSort"
+    @update:search-query="handleSearchChange"
+    @update:selected-sort="handleSortChange"
     @update:view-mode="handleViewModeChange"
   />
 </template>
@@ -18,5 +18,13 @@
 
   function handleViewModeChange (value: 'grid' | 'list'): void {
     movieStore.viewMode = value
+  }
+
+  function handleSearchChange (value: string): void {
+    favoriteStore.setSearchQuery(value)
+  }
+
+  function handleSortChange (value: string): void {
+    favoriteStore.setSelectedSort(value)
   }
 </script>
